@@ -30,6 +30,8 @@ var SnakeGame	=	function(canvas){
 		heading		=	EAST;
 		snakeBits.unshift(bit(4,4));
 
+
+		placeFood();
 		//clear the interval
 		clearInterval(timer);
 		timer	=	setInterval(gameLoop,interval);
@@ -93,7 +95,34 @@ var SnakeGame	=	function(canvas){
 
 	//function that will draw the food
 	function drawFood(){
+		drawInCell(food.x,food.y,function(){
+			ctx.fillStyle	=	'orange';
+			ctx.beginPath();
+			ctx.arc(CELL_SIZE/2,CELL_SIZE/2,
+					CELL_SIZE/2,0,2*PI,true);
+			ctx.fill();
+		})	
+	}
+
+	// place the food on the canvas
+	function placeFood(){
+		var	x	=	Math.round(Math.random() * (MAX_X - 1)),
+			y	=	Math.round(Math.random() * (MAX_Y - 1));
 		
+		if(inSnake(x,y,true)) return placeFood();
+
+		food 	= {x: x, y: y};
+	}
+
+	//Check if the food is on snake
+	function inSnake(x,y,includeHead){
+		var length	= 	snakeBits.length,
+			i		=	includeHead ? 0 : 1	;
+		for(;i<length;i++){
+			if(x==snakeBits[i].x && y == snakeBits[i].y)
+				return true;
+		}
+		return false;
 	}
 
 	// return an object with
