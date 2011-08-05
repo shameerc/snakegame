@@ -11,7 +11,7 @@ var SnakeGame	=	function(canvas){
 		CELL_SIZE	= 	20, 		// cell sice in pixels
 		PI			=	Math.PI,	
 		MAX_X		=	30, MAX_Y = 20,
-		GROWTH		=	5;
+		GROWTH		=	1;
 	
 	// Get the canvas and context
 	var canvas 		=	$(canvas)[0],
@@ -28,7 +28,7 @@ var SnakeGame	=	function(canvas){
 
 	function startGame(){
 		heading		=	EAST;
-		snakeBits.unshift(bit(4,4));
+		snakeBits.unshift(bit(10,4));
 
 
 		placeFood();
@@ -53,7 +53,29 @@ var SnakeGame	=	function(canvas){
 
 	//advance the snake to move
 	function advanceSnake(){
-		
+		var head	=	snakeBits[0];
+		switch(heading){
+			case NORTH : 
+				snakeBits.unshift(bit(head.x ,head.y - 1));
+				break;
+			case SOUTH : 
+				snakeBits.unshift(bit(head.x ,head.y + 1));
+				break;
+			case EAST : 
+				snakeBits.unshift(bit(head.x + 1 ,head.y));
+				break;
+			case WEST : 
+				snakeBits.unshift(bit(head.x - 1 ,head.y));
+				break;
+		}
+		if(0===bitsToGrow) {
+			console.log(snakeBits.length);
+			snakeBits.pop();
+			console.log(snakeBits.length);
+		}
+		else{
+			bitsToGrow-- ;
+		}
 	}
 
 	//To check collision
@@ -63,7 +85,7 @@ var SnakeGame	=	function(canvas){
 
 	//To clear canvas
 	function clearCanvas(){
-		
+		canvas.width = canvas.width;
 	}
 
 	// draw the snake
