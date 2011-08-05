@@ -23,9 +23,10 @@ var SnakeGame	=	function(canvas){
 		bitsToGrow	=	GROWTH,	// bits left to grow in the next iteration
 		timer,					//	timer to loop the game
 		interval	=	100, 	// interval for the timer
-		food;					// current position of food
+		food, stopped = false;	// current position of food
 	
 
+	// start the game here
 	function startGame(){
 		heading		=	EAST;
 		snakeBits.unshift(bit(10,4));
@@ -37,6 +38,12 @@ var SnakeGame	=	function(canvas){
 		timer	=	setInterval(gameLoop,interval);
 	}
 
+	//stop the game
+	function stopGame(){
+		clearInterval(timer);
+		stopped		=	true;
+	}
+
 	//function that will take x and y coordinates
 	//and will return an object
 	function bit(x,y){
@@ -46,10 +53,39 @@ var SnakeGame	=	function(canvas){
 	function gameLoop(){
 		advanceSnake();
 		checkCollision();
-		clearCanvas();
-		drawSnake();
-		drawFood();
+
+		// if the game not stopped
+		if(!stopped) {
+			clearCanvas();
+			drawSnake();
+			drawFood();
+		}
 	}
+
+	// when presses a key 
+	document.onkeydown = checkEvents;
+
+	//check for events to set the heading direction
+	function checkEvents(evt){
+		evt = (evt) ? evt : ((window.event) ? event : null);
+	    if (evt) {
+			switch(evt.keyCode)    	{
+				case 37 :
+					heading = (heading != EAST) ? WEST :EAST;
+					break;
+				case 38 :
+					heading	= (heading != SOUTH)? NORTH : SOUTH;
+					break;
+				case 39 :
+					heading	= (heading != WEST) ? EAST : WEST;
+					break;
+				case 40 :
+					heading	= (heading != NORTH) ? SOUTH : NORTH;
+					break;
+			}
+	    }
+	}
+
 
 	//advance the snake to move
 	function advanceSnake(){
@@ -69,9 +105,7 @@ var SnakeGame	=	function(canvas){
 				break;
 		}
 		if(0===bitsToGrow) {
-			console.log(snakeBits.length);
 			snakeBits.pop();
-			console.log(snakeBits.length);
 		}
 		else{
 			bitsToGrow-- ;
@@ -80,7 +114,12 @@ var SnakeGame	=	function(canvas){
 
 	//To check collision
 	function checkCollision(){
-		
+		var head	=	snakeBits[0];
+		if(head.x+1 > MAX_X || head.y+1 > MAX_Y
+			|| head.x+ 1 == 0 || head.y+1 ==0){
+			stopGame();
+			document.getElementById('result').innerHTML = 'Game faled';
+		}
 	}
 
 	//To clear canvas
