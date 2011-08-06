@@ -11,10 +11,12 @@ var SnakeGame	=	function(canvas){
 		CELL_SIZE	= 	20, 		// cell sice in pixels
 		PI			=	Math.PI,	
 		MAX_X		=	30, MAX_Y = 20,
+		POINT		=	5;
 		GROWTH		=	1;
 	
 	// where to show the result
 	resultField		=	document.getElementById('result');
+	pointsField		=	document.getElementById('current-point');
 	
 	// Get the canvas and context
 	var canvas 		=	$(canvas)[0];
@@ -36,6 +38,8 @@ var SnakeGame	=	function(canvas){
 		bitsToGrow	=	GROWTH,	// bits left to grow in the next iteration
 		timer,					//	timer to loop the game
 		interval	=	100, 	// interval for the timer
+		lastDir		=	NORTH,	// variable to keep the last direction
+		curretPoints=	0,		// current points
 		food, stopped = false;	// current position of food
 	
 
@@ -85,16 +89,16 @@ var SnakeGame	=	function(canvas){
 	    if (evt) {
 			switch(evt.keyCode)    	{
 				case 37 :
-					heading = (heading != EAST) ? WEST :EAST;
+					heading = (lastDir != EAST) ? WEST :EAST;
 					break;
 				case 38 :
-					heading	= (heading != SOUTH)? NORTH : SOUTH;
+					heading	= (lastDir != SOUTH)? NORTH : SOUTH;
 					break;
 				case 39 :
-					heading	= (heading != WEST) ? EAST : WEST;
+					heading	= (lastDir != WEST) ? EAST : WEST;
 					break;
 				case 40 :
-					heading	= (heading != NORTH) ? SOUTH : NORTH;
+					heading	= (lastDir != NORTH) ? SOUTH : NORTH;
 					break;
 			}
 	    }
@@ -124,6 +128,7 @@ var SnakeGame	=	function(canvas){
 		else{
 			bitsToGrow-- ;
 		}
+		lastDir = heading;
 	}
 
 	//To check collision
@@ -132,7 +137,7 @@ var SnakeGame	=	function(canvas){
 		if(head.x+1 > MAX_X || head.y+1 > MAX_Y
 			|| head.x+ 1 == 0 || head.y+1 ==0){
 			stopGame();
-			document.getElementById('result').innerHTML = 'Game failed';
+			document.getElementById('result').innerHTML = 'Game finished. Points : ' + curretPoints;
 		}
 	}
 
@@ -141,14 +146,23 @@ var SnakeGame	=	function(canvas){
 		if(food.x == head.x && food.y== head.y){
 			refreshFood();
 			bitsToGrow = GROWTH;
+			updatePoint();
 		}
 	}
+
 
 	function refreshFood(){
 		ctx.clearRect(food.x,food.y,CELL_SIZE,CELL_SIZE);
 		placeFood();
 		drawFood();
 	}
+
+	// Update the current point
+	function updatePoint(){
+		curretPoints	=	curretPoints + POINT;
+		pointsField.innerHTML	=	curretPoints;
+	}
+
 
 	//To clear canvas
 	function clearCanvas(){

@@ -53,3 +53,7 @@ footer{
 .clear{
 	clear:both;
 }
+#points {
+	float:left;
+	margin-left:150px;
+}
