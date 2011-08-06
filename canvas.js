@@ -13,9 +13,22 @@ var SnakeGame	=	function(canvas){
 		MAX_X		=	30, MAX_Y = 20,
 		GROWTH		=	1;
 	
+	// where to show the result
+	resultField		=	document.getElementById('result');
+	
 	// Get the canvas and context
-	var canvas 		=	$(canvas)[0],
-		ctx			=	canvas.getContext('2d');
+	var canvas 		=	$(canvas)[0];
+
+	// if the browser supports canvas
+	if(canvas.getContext){
+		var	ctx			=	canvas.getContext('2d');
+	}
+	else{
+		// else throw an error message
+		err	=	"Sorry. Your browser won't support html5";
+		resultField.innerHTML	=	err;
+		return false;
+	}
 
 	//other variables
 	var snakeBits	=	[],		// Array containing position of bits of snakes
@@ -154,6 +167,7 @@ var SnakeGame	=	function(canvas){
 	function drawBit(bit){
 		drawInCell(bit.x,bit.y,function(){
 			ctx.beginPath();
+			ctx.fillStyle = '#1f4500';
 			ctx.rect(0,0,CELL_SIZE,CELL_SIZE);
 			ctx.fill();
 		})
@@ -211,5 +225,7 @@ var SnakeGame	=	function(canvas){
 $(function(){
 	window.snake	=	SnakeGame('#canvas');
 	// start the game
-	snake.start();
+	if(snake){
+		snake.start();
+	}
 })

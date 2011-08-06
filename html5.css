@@ -1,10 +1,55 @@
+
+html,body,p,h1,h2,h3,h4,h5,h6,canvas,header,table,tr,td,div{
+	margin:0;
+	padding:0;
+}
+html{
+	height:100%;
+	background-color: #fff;
+}
 body {
 	width:900px;
 	margin: 0 auto;
-	background-color: #fff;
-	border: 2px solid #eee;
+	background-color: #fffee9;
+	border: 2px solid #62694e;
+	border-bottom:none;
+	border-top:none;
+	height:100%;
 }
 canvas{
-	border:2px solid #099;
-	margin: 50px 50px 0px;
+	border: 2px solid #099;
+	margin: 0px 150px 0 150px;
+	background-color: #EBFBFB;
+}
+header{
+	padding-top:50px;
+	background-color: #e2f8f7;
+}
+header h2{
+	text-align:center;
+	font-size:32px;
+	color: #4D2200;
+}
+#result {
+	height:30px; 
+	width:600px;
+	margin: 50px 150px 20px 150px;
+	text-align: center;
+	font: 18px "Georgia", "Trebuchet MS", Verdana, sans-serif; 
+	color:#ff0000;
+}
+#controles{
+	float: right;
+	margin-right:150px;
+}
+#outer{
+	height:100%;
+}
+footer{
+	bottom:0;
+	margin-top : -20px;
+	text-align:center;
+}
+.clear{
+	clear:both;
 }
