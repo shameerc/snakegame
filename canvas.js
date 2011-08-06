@@ -59,6 +59,7 @@ var SnakeGame	=	function(canvas){
 			clearCanvas();
 			drawSnake();
 			drawFood();
+			eatFood();
 		}
 	}
 
@@ -118,8 +119,22 @@ var SnakeGame	=	function(canvas){
 		if(head.x+1 > MAX_X || head.y+1 > MAX_Y
 			|| head.x+ 1 == 0 || head.y+1 ==0){
 			stopGame();
-			document.getElementById('result').innerHTML = 'Game faled';
+			document.getElementById('result').innerHTML = 'Game failed';
 		}
+	}
+
+	function eatFood(){
+		var head = snakeBits[0];
+		if(food.x == head.x && food.y== head.y){
+			refreshFood();
+			bitsToGrow = GROWTH;
+		}
+	}
+
+	function refreshFood(){
+		ctx.clearRect(food.x,food.y,CELL_SIZE,CELL_SIZE);
+		placeFood();
+		drawFood();
 	}
 
 	//To clear canvas
